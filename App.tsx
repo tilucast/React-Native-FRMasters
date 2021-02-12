@@ -31,7 +31,11 @@ export default function App() {
           component={ColorPalette}
           options={({ route }) => ({ title: route.params?.item.text })}
         />
-        <Stack.Screen name="ColorScheme" component={ColorScheme} />
+        <Stack.Screen
+          name="ColorScheme"
+          component={ColorScheme}
+          options={({ route }) => ({ title: route.params?.title })}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

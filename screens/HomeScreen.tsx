@@ -1,16 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
-import {
-  Text,
-  View,
-  FlatList,
-  StyleSheet,
-  //StatusBar as RNStatusBar,
-  TouchableOpacity,
-} from 'react-native';
-import ViewBox from '../components/ViewBox';
+import { View, FlatList, StyleSheet } from 'react-native';
 import { StackScreenInterface } from '../common/interfaces/InterfacesAndTypes';
+import MiniBox from '../components/MiniBox';
 
 type Props = StackScreenProps<StackScreenInterface, 'Home'>;
 
@@ -51,79 +44,33 @@ const Home: React.FC<Props> = ({ navigation }) => {
     { text: 'Orange', color: '#e66225' },
   ];
 
-  const SectionListHeader: React.FC<{ title: string }> = ({ title }) => (
-    <Text
-      style={{
-        color: 'black',
-        fontWeight: 'bold',
-        fontSize: 18,
-        textAlign: 'center',
-        marginTop: 8,
-      }}
-    >
-      {title}
-    </Text>
-  );
+  const colorPalettes = [
+    { paletteName: 'Solarized', data: solarized },
+    { paletteName: 'Rainbow', data: rainbow },
+    { paletteName: 'FR Masters', data: frMasters },
+  ];
 
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <FlatList
-        style={styles.flatListStyle}
-        data={solarized.slice(0, 5)}
-        keyExtractor={({ text }, index) => text + index}
-        renderItem={(color) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('ColorScheme', {
-                data: solarized,
-                title: 'Solarized',
-              })
-            }
-          >
-            <ViewBox
-              viewBoxProps={{ text: color.item.text, color: color.item.color }}
+      <View style={{ alignItems: 'flex-start', paddingHorizontal: 5 }}>
+        <FlatList
+          style={styles.flatListStyle}
+          data={colorPalettes}
+          keyExtractor={({ paletteName }, index) => paletteName + index}
+          renderItem={({ item }) => (
+            <MiniBox
+              onPress={() =>
+                navigation.navigate('ColorScheme', {
+                  data: item.data,
+                  title: item.paletteName,
+                })
+              }
+              colors={item}
             />
-          </TouchableOpacity>
-        )}
-        ListHeaderComponent={<SectionListHeader title={'Solarized'} />}
-      />
-      <FlatList
-        style={styles.flatListStyle}
-        data={rainbow.slice(0, 5)}
-        keyExtractor={({ text }, index) => text + index}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('ColorScheme', {
-                data: rainbow,
-                title: 'Rainbow',
-              })
-            }
-          >
-            <ViewBox viewBoxProps={{ text: item.text, color: item.color }} />
-          </TouchableOpacity>
-        )}
-        ListHeaderComponent={<SectionListHeader title={'Rainbow'} />}
-      />
-      <FlatList
-        style={styles.flatListStyle}
-        data={frMasters.slice(0, 5)}
-        keyExtractor={({ text }, index) => text + index}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('ColorScheme', {
-                data: frMasters,
-                title: 'FR Masters',
-              })
-            }
-          >
-            <ViewBox viewBoxProps={{ text: item.text, color: item.color }} />
-          </TouchableOpacity>
-        )}
-        ListHeaderComponent={<SectionListHeader title={'FR Masters'} />}
-      />
+          )}
+        />
+      </View>
     </View>
   );
 };
@@ -132,19 +79,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffe3f1',
-    alignItems: 'center',
-    //paddingTop: Platform.OS === 'android' ? RNStatusBar.currentHeight : 0,
-    paddingHorizontal: 10,
+    alignItems: 'flex-start',
+    paddingTop: 8,
+    paddingHorizontal: 14,
     paddingBottom: 20,
   },
   flatListStyle: {
-    width: '100%',
-    marginVertical: 20,
-    borderColor: 'black',
-    borderRadius: 5,
-    borderWidth: 3,
-    zIndex: 100,
-    paddingHorizontal: 5,
+    flexGrow: 0,
+    marginVertical: 10,
   },
 });
 

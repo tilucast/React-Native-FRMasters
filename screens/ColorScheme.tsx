@@ -2,7 +2,6 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StackScreenProps } from '@react-navigation/stack';
 import {
-  Text,
   View,
   FlatList,
   StyleSheet,
@@ -29,19 +28,6 @@ const ColorScheme: React.FC<Props> = ({ navigation, route }) => {
             <ViewBox viewBoxProps={{ text: item.text, color: item.color }} />
           </TouchableOpacity>
         )}
-        ListHeaderComponent={
-          <Text
-            style={{
-              color: 'white',
-              fontWeight: 'bold',
-              fontSize: 18,
-              textAlign: 'center',
-              marginTop: 8,
-            }}
-          >
-            {route.params.title}
-          </Text>
-        }
       />
     </View>
   );
@@ -50,9 +36,8 @@ const ColorScheme: React.FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'pink',
+    backgroundColor: '#ffe3f1',
     alignItems: 'center',
-    //paddingTop: Platform.OS === 'android' ? RNStatusBar.currentHeight : 0,
     paddingHorizontal: 10,
     paddingBottom: 20,
   },
