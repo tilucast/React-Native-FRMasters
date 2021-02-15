@@ -20,12 +20,17 @@ const ColorScheme: React.FC<Props> = ({ navigation, route }) => {
       <FlatList
         style={{ width: '100%' }}
         data={route.params.data}
-        keyExtractor={({ text }, index) => text + index}
+        keyExtractor={({ colorName }, index) => colorName + index}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => navigation.navigate('ColorPalette', { item })}
           >
-            <ViewBox viewBoxProps={{ text: item.text, color: item.color }} />
+            <ViewBox
+              viewBoxProps={{
+                colorName: item.colorName,
+                hexCode: item.hexCode,
+              }}
+            />
           </TouchableOpacity>
         )}
       />

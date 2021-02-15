@@ -2,15 +2,18 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { isItDarkOrNot } from '../common/scripts/styleScripts';
 
-const ViewBox: React.FC<{ viewBoxProps: { text: string; color: string } }> = ({
-  viewBoxProps,
-}) => {
+const ViewBox: React.FC<{
+  viewBoxProps: { colorName: string; hexCode: string };
+}> = ({ viewBoxProps }) => {
   return (
-    <View style={[styles.viewStyle, { backgroundColor: viewBoxProps.color }]}>
+    <View style={[styles.viewStyle, { backgroundColor: viewBoxProps.hexCode }]}>
       <Text
-        style={{ color: isItDarkOrNot(viewBoxProps.color), fontWeight: '700' }}
+        style={{
+          color: isItDarkOrNot(viewBoxProps.hexCode),
+          fontWeight: '700',
+        }}
       >
-        {viewBoxProps.text}
+        {viewBoxProps.colorName}
       </Text>
     </View>
   );

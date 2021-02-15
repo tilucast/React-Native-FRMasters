@@ -6,7 +6,7 @@ const MiniBox: React.FC<{
   onPress: (event: any) => void;
   colors: {
     paletteName: string;
-    data: { text: string; color: string }[];
+    data: { colorName: string; hexCode: string }[];
   };
 }> = ({ colors: { paletteName, data }, onPress }) => {
   return (
@@ -15,10 +15,10 @@ const MiniBox: React.FC<{
         <Text style={styles({}).paletteName}>{paletteName}</Text>
         <FlatList
           data={data.slice(0, 5)}
-          keyExtractor={({ color }, index) => color + index}
+          keyExtractor={({ hexCode }, index) => hexCode + index}
           horizontal={true}
-          renderItem={({ item: { color } }) => (
-            <View style={styles({ color }).container} />
+          renderItem={({ item: { hexCode } }) => (
+            <View style={styles({ hexCode }).container} />
           )}
         />
       </TouchableOpacity>
@@ -26,10 +26,10 @@ const MiniBox: React.FC<{
   );
 };
 
-const styles = ({ color }: any) =>
+const styles = ({ hexCode }: any) =>
   StyleSheet.create({
     container: {
-      backgroundColor: color,
+      backgroundColor: hexCode,
       width: 50,
       height: 50,
       marginHorizontal: 5,
