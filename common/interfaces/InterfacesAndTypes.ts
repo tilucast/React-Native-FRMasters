@@ -5,6 +5,12 @@ type StackScreenInterface = {
     data: { colorName: string; hexCode: string }[];
     title: string;
   };
+  ColorPaletteModal: undefined;
 };
 
-export { StackScreenInterface };
+type RootStackScreenInterface = {
+  Main: undefined;
+  ColorPaletteModal: undefined;
+};
+
+export { StackScreenInterface, RootStackScreenInterface };

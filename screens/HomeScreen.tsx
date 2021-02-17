@@ -1,7 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState, useCallback } from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
-import { View, FlatList, StyleSheet } from 'react-native';
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
 import { StackScreenInterface } from '../common/interfaces/InterfacesAndTypes';
 import MiniBox from '../components/MiniBox';
 
@@ -60,6 +66,15 @@ const Home: React.FC<Props> = ({ navigation }) => {
               colors={item}
             />
           )}
+          onRefresh={colorsCallback}
+          refreshing={false}
+          ListHeaderComponent={
+            <TouchableOpacity
+              onPress={() => navigation.navigate('ColorPaletteModal')}
+            >
+              <Text style={styles.headerColorScheme}>Add a color scheme</Text>
+            </TouchableOpacity>
+          }
         />
       </View>
     </View>
@@ -78,6 +93,11 @@ const styles = StyleSheet.create({
   flatListStyle: {
     flexGrow: 0,
     marginVertical: 10,
+  },
+  headerColorScheme: {
+    fontSize: 25,
+    color: '#2aa198',
+    fontWeight: '700',
   },
 });
 

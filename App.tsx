@@ -1,42 +1,57 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import { StackScreenInterface } from './common/interfaces/InterfacesAndTypes';
+import {
+  RootStackScreenInterface,
+  StackScreenInterface,
+} from './common/interfaces/InterfacesAndTypes';
 import ColorPalette from './screens/ColorPalette';
+import ColorPaletteModal from './screens/ColorPaletteModal';
 import ColorScheme from './screens/ColorScheme';
 import Home from './screens/HomeScreen';
 
-const Stack = createStackNavigator<StackScreenInterface>();
+const MainStack = createStackNavigator<StackScreenInterface>();
+const RootStack = createStackNavigator<RootStackScreenInterface>();
+
+const MainStackScreen = () => {
+  return (
+    <MainStack.Navigator
+      headerMode="float"
+      screenOptions={{
+        headerTintColor: 'black',
+        headerStyle: {},
+      }}
+    >
+      <MainStack.Screen name="Home" component={Home} />
+      <MainStack.Screen
+        name="ColorPalette"
+        component={ColorPalette}
+        options={({ route }) => ({ title: route.params?.item.colorName })}
+      />
+      <MainStack.Screen
+        name="ColorScheme"
+        component={ColorScheme}
+        options={({ route }) => ({ title: route.params?.title })}
+      />
+    </MainStack.Navigator>
+  );
+};
 
 export default function App() {
-  // const capitalizeFirstLetter = (string: string) =>
-  //   string.charAt(0).toUpperCase() + string.slice(1);
-
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        headerMode="screen"
-        screenOptions={{
-          headerTintColor: 'white',
-          headerStyle: {
-            backgroundColor: 'pink',
-            borderBottomColor: 'black',
-            borderBottomWidth: 1,
-          },
-        }}
-      >
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen
-          name="ColorPalette"
-          component={ColorPalette}
-          options={({ route }) => ({ title: route.params?.item.text })}
+      <RootStack.Navigator mode="modal" headerMode="float">
+        <RootStack.Screen
+          name="Main"
+          component={MainStackScreen}
+          options={{ headerShown: false }}
         />
-        <Stack.Screen
-          name="ColorScheme"
-          component={ColorScheme}
-          options={({ route }) => ({ title: route.params?.title })}
+        <RootStack.Screen
+          name="ColorPaletteModal"
+          component={ColorPaletteModal}
+          options={{ headerTitle: 'Add New Palette' }}
         />
-      </Stack.Navigator>
+      </RootStack.Navigator>
     </NavigationContainer>
   );
 }
