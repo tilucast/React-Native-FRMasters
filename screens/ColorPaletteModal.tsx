@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Text,
   View,
@@ -6,32 +6,55 @@ import {
   StyleSheet,
   Switch,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 
 const ColorPaletteModal = () => {
-  const [switchState, setSwitchState] = useState(false);
+  const colors = [
+    { colorName: 'AliceBlue', hexCode: '#F0F8FF' },
+    { colorName: 'AntiqueWhite', hexCode: '#FAEBD7' },
+    { colorName: 'Aqua', hexCode: '#00FFFF' },
+  ];
 
-  const handleSwitchState = () => setSwitchState(!switchState);
+  const [selectedColors, setSelectedColors] = useState([]);
+
+  const handleUpdate = useCallback(
+    (color, newValue) => {
+      if (newValue === true) {
+        setSelectedColors((current) => [...current, color]);
+      } else {
+        setSelectedColors((current) =>
+          current.filter((c) => c.colorName !== color.colorName),
+        );
+      }
+    },
+    [setSelectedColors],
+  );
 
   return (
     <View style={styles.container}>
       <Text>Name of your color palette</Text>
       <TextInput style={styles.textPlaceholder} placeholder="Type something" />
 
-      <View style={styles.switchColorBox}>
-        <Text>AliceBlue</Text>
-        <Switch onValueChange={handleSwitchState} value={switchState} />
-      </View>
-
-      <View style={styles.switchColorBox}>
-        <Text>AntiqueWhite</Text>
-        <Switch onValueChange={handleSwitchState} value={switchState} />
-      </View>
-
-      <View style={styles.switchColorBox}>
-        <Text>Aqua</Text>
-        <Switch onValueChange={handleSwitchState} value={switchState} />
-      </View>
+      <FlatList
+        data={colors}
+        keyExtractor={({ hexCode }) => hexCode}
+        renderItem={({ item }) => {
+          return (
+            <View style={styles.switchColorBox}>
+              <Text>{item.colorName}</Text>
+              <Switch
+                value={
+                  !!selectedColors.find(
+                    (color) => color.colorName === item.colorName,
+                  )
+                }
+                onValueChange={(newValue) => handleUpdate(item, newValue)}
+              />
+            </View>
+          );
+        }}
+      />
 
       <TouchableOpacity style={styles.submitButton}>
         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 16 }}>
