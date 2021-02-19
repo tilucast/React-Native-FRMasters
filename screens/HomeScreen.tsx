@@ -13,20 +13,20 @@ import MiniBox from '../components/MiniBox';
 
 type Props = StackScreenProps<StackScreenInterface, 'Home'>;
 
-const Home: React.FC<Props> = ({ navigation }) => {
-  interface ColorPalettes {
-    paletteName: string;
-    data: { colorName: string; hexCode: string }[];
-  }
+interface ColorPalettes {
+  paletteName: string;
+  data: { colorName: string; hexCode: string }[];
+}
 
-  interface ColorPaletteAPI {
-    paletteName: string;
-    colors: {
-      colorName: string;
-      hexCode: string;
-    }[];
-  }
+interface ColorPaletteAPI {
+  paletteName: string;
+  colors: {
+    colorName: string;
+    hexCode: string;
+  }[];
+}
 
+const Home: React.FC<Props> = ({ navigation, route }) => {
   const [colorsApi, setColorsApi] = useState<ColorPalettes[]>();
 
   const colorsCallback = useCallback(async () => {
@@ -46,6 +46,15 @@ const Home: React.FC<Props> = ({ navigation }) => {
   useEffect(() => {
     colorsCallback();
   }, [colorsCallback]);
+
+  useEffect(() => {
+    if (Array.isArray(colorsApi) && route.params?.selectedColors) {
+      const x = [route.params.selectedColors].concat(colorsApi);
+      const c = [route.params.selectedColors, ...colorsApi];
+      setColorsApi(c);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [route.params?.selectedColors]);
 
   return (
     <View style={styles.container}>

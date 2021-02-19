@@ -1,5 +1,12 @@
 type StackScreenInterface = {
-  Home: undefined;
+  Home:
+    | undefined
+    | {
+        selectedColors: {
+          paletteName: string;
+          data: { colorName: string; hexCode: string }[];
+        };
+      };
   ColorPalette: undefined | { item: { colorName: string; hexCode: string } };
   ColorScheme: {
     data: { colorName: string; hexCode: string }[];
