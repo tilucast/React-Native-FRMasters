@@ -1,5 +1,5 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import {
   Text,
   View,
@@ -56,7 +56,8 @@ const ColorPaletteModal: React.FC<Props> = ({ navigation }) => {
     navigation.navigate('Home', { selectedColors: colorPalette });
   };
 
-  console.log(COLORS.length);
+  const switchValue = (item: any) =>
+    !!selectedColors.find((color) => color.colorName === item.colorName);
 
   return (
     <View style={styles.container}>
@@ -73,15 +74,19 @@ const ColorPaletteModal: React.FC<Props> = ({ navigation }) => {
         keyExtractor={({ hexCode }, index) => hexCode + index}
         renderItem={({ item }) => {
           return (
-            <View style={styles.switchColorBox}>
+            <View style={styles.switchColorBox} onTouchStart={() => {}}>
               <Text>{item.colorName}</Text>
-              <Switch
-                value={
-                  !!selectedColors.find(
-                    (color) => color.colorName === item.colorName,
-                  )
+              <View
+                style={
+                  switchValue(item) &&
+                  styledProps({ backgroundColor: item.hexCode }).box
                 }
+              />
+              <Switch
+                value={switchValue(item)}
                 onValueChange={(newValue) => handleUpdate(item, newValue)}
+                trackColor={{ false: '#d9d9d9', true: `${item.hexCode}` }}
+                thumbColor={`${item.hexCode}`}
               />
             </View>
           );
@@ -131,5 +136,14 @@ const styles = StyleSheet.create({
     marginVertical: 15,
   },
 });
+
+const styledProps = ({ backgroundColor }: any) =>
+  StyleSheet.create({
+    box: {
+      width: 55,
+      height: 25,
+      backgroundColor: backgroundColor,
+    },
+  });
 
 export default ColorPaletteModal;
